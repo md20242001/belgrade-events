@@ -40,11 +40,9 @@ export default function EventLocationMap({
                     v: "weekly",
                 });
 
-                const mapsLibrary =
-                    await importLibrary("maps");
+                const mapsLibrary = await importLibrary("maps");
 
-                const markerLibrary =
-                    await importLibrary("marker");
+                const markerLibrary = await importLibrary("marker");
 
                 const {
                     Map,
