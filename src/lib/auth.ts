@@ -2,10 +2,14 @@ import * as jwt from "jsonwebtoken";
 
 export const AUTH_COOKIE = "auth";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+function getJwtSecret() {
+    const secret = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-    throw new Error("Missing JWT_SECRET in env file");
+    if (!secret) {
+        throw new Error("Missing JWT_SECRET in environment variables");
+    }
+
+    return secret;
 }
 
 export type JwtUserClaims = {
@@ -18,7 +22,7 @@ export type JwtUserClaims = {
 };
 
 export function signAuthToken(claims: JwtUserClaims) {
-    return jwt.sign(claims, JWT_SECRET, {
+    return jwt.sign(claims, getJwtSecret(), {
         algorithm: "HS256",
         expiresIn: "7d",
     });
@@ -27,7 +31,7 @@ export function signAuthToken(claims: JwtUserClaims) {
 export function verifyAuthToken(token: string): JwtUserClaims {
     const payload = jwt.verify(
         token,
-        JWT_SECRET,
+        getJwtSecret(),
     ) as jwt.JwtPayload & JwtUserClaims;
 
     if (
